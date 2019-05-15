@@ -218,10 +218,10 @@ def treewidth_decomp(G, heuristic=min_fill_in_heuristic):
             if edge[1] == node:
                 e.append(edge[0])
         out[node] = e
-    print(out)
-    print(list(decomp.nodes()))
-    # nx.draw(decomp, with_labels=True)
-    nice_tree_decomp(out)
+    #print(out)
+    #print(list(decomp.nodes()))
+    #nice_tree_decomp(out)
+    #nx.draw(decomp, with_labels=True)
     return treewidth, decomp
 
 
