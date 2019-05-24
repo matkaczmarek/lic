@@ -218,8 +218,8 @@ def treewidth_decomp(G, heuristic=min_fill_in_heuristic):
             if edge[1] == node:
                 e.append(edge[0])
         out[node] = e
-    #print(out)
-    #print(list(decomp.nodes()))
+    print(out)
+    print(list(decomp.nodes()))
     #nice_tree_decomp(out)
     #nx.draw(decomp, with_labels=True)
     return treewidth, decomp
@@ -227,9 +227,12 @@ def treewidth_decomp(G, heuristic=min_fill_in_heuristic):
 
 def tree_decomposition():
     matplotlib.interactive(True)
-    G = {0: [1], 1: [0, 2, 3], 2: [1, 4], 3: [1, 4], 4: [2, 3, 5], 5: [4]}
+    #G = {0: [1], 1: [0, 2, 3], 2: [1, 4], 3: [1, 4], 4: [2, 3, 5], 5: [4]}
+    G = {0: [1, 2], 1: [0, 2], 2: [0, 1]}
     G_nx = nx.DiGraph()
     G_nx.add_nodes_from(G.keys())
     for k, v in G.items():
         G_nx.add_edges_from(([(k, t) for t in v]))
     return treewidth_decomp(G)
+
+tree_decomposition()
