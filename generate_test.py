@@ -228,7 +228,7 @@ def treewidth_decomp(G, heuristic=min_fill_in_heuristic):
 def tree_decomposition():
     matplotlib.interactive(True)
     #G = {0: [1], 1: [0, 2, 3], 2: [1, 4], 3: [1, 4], 4: [2, 3, 5], 5: [4]}
-    G = {0: [1, 2], 1: [0, 2], 2: [0, 1]}
+    G = {0: [1, 2, 3, 4], 1: [0, 2, 3, 4], 2: [0, 1, 3, 4], 3: [0, 1, 2, 4], 4: [0, 1, 2, 3]}
     G_nx = nx.DiGraph()
     G_nx.add_nodes_from(G.keys())
     for k, v in G.items():
