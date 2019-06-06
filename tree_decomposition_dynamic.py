@@ -52,7 +52,7 @@ def is_acyclic_merge(P1, P2, P):
     return False
 
 
-def memoisation(t, T, C, X, P, labels, G):
+def memoization(t, T, C, X, P, labels, G):
     if (t, X, P) in C.keys():
         return C[(t, X, P)]
 
@@ -71,11 +71,11 @@ def memoisation(t, T, C, X, P, labels, G):
         if (v in X and frozenset([v]) not in P) or (v in K and v not in X):
             C[(t, X, P)] = sys.maxsize
         elif v in X and frozenset([v]) in P:
-            C[(t, X, P)] = memoisation(t_prim, T, C, X.difference([v])
+            C[(t, X, P)] = memoization(t_prim, T, C, X.difference([v])
                                        , frozenset([x for x in P if x != frozenset([v])])
                                        , labels, G)
         else:
-            C[(t, X, P)] = memoisation(t_prim, T, C, X, P, labels, G)
+            C[(t, X, P)] = memoization(t_prim, T, C, X, P, labels, G)
 
     elif labels[t][0] == INTRODUCE_EDGE_NODE:
         t_prim = [i for i in T.neighbors(t)][0]
@@ -85,7 +85,7 @@ def memoisation(t, T, C, X, P, labels, G):
 
         # if for all (u, v) not in P_i then u, v are in separate P_i
         if u not in X or v not in X or all(not frozenset([u, v]).issubset(P_i) for P_i in P):
-            C[(t, X, P)] = memoisation(t_prim, T, C, X, P, labels, G)
+            C[(t, X, P)] = memoization(t_prim, T, C, X, P, labels, G)
         else:
             minimum = sys.maxsize
             for P_i in P:
@@ -102,10 +102,10 @@ def memoisation(t, T, C, X, P, labels, G):
                         continue
 
                     Temp = frozenset([inner for inner in Temp_outer] + [inner for inner in inner_part])
-                    minimum = min(minimum, memoisation(t_prim, T, C, X, Temp, labels, G) + 1)
+                    minimum = min(minimum, memoization(t_prim, T, C, X, Temp, labels, G) + 1)
                 break
 
-            C[(t, X, P)] = min(minimum, memoisation(t_prim, T, C, X, P, labels, G))
+            C[(t, X, P)] = min(minimum, memoization(t_prim, T, C, X, P, labels, G))
         G.add_edge(u, v)
 
     elif labels[t][0] == FORGET_NODE:
@@ -119,9 +119,9 @@ def memoisation(t, T, C, X, P, labels, G):
             P_i = P_i.union([w])
             Temp = frozenset([inner for inner in Temp] + [P_i])
 
-            minimum = min(minimum, memoisation(t_prim, T, C, X.union([w]), Temp, labels, G))
+            minimum = min(minimum, memoization(t_prim, T, C, X.union([w]), Temp, labels, G))
 
-        C[(t, X, P)] = min(minimum, memoisation(t_prim, T, C, X, P, labels, G))
+        C[(t, X, P)] = min(minimum, memoization(t_prim, T, C, X, P, labels, G))
 
     elif labels[t][0] == JOIN_NODE:
 
@@ -134,7 +134,7 @@ def memoisation(t, T, C, X, P, labels, G):
             for P2 in partition(X):
                 if is_acyclic_merge(P1, P2, P):
                     minimum = min(minimum,
-                                  memoisation(t1, T, C, X, P1, labels, G) + memoisation(t2, T, C, X, P2,
+                                  memoization(t1, T, C, X, P1, labels, G) + memoization(t2, T, C, X, P2,
                                                                                         labels, G))
 
         C[(t, X, P)] = minimum
@@ -199,7 +199,7 @@ def tree_decomp_dynamic(T, root, labels, K, G):
 
     C = {}
 
-    return memoisation(root, T, C, frozenset([u]), frozenset([frozenset([u])]), labels, G)
+    return memoization(root, T, C, frozenset([u]), frozenset([frozenset([u])]), labels, G)
 
 
 T = {0: [1]
@@ -300,6 +300,6 @@ for x in T.keys():
     for y in T[x]:
         edges_to_add.append((x, y))
 Tree.add_edges_from(edges_to_add)
-K = [0, 4, 6]
+K = [0, 1, 2, 3, 4, 5, 6]
 print(tree_decomp_dynamic(Tree, 0, labels, K, G))
 # nx.draw(Tree, with_labels=True)
