@@ -300,6 +300,6 @@ for x in T.keys():
     for y in T[x]:
         edges_to_add.append((x, y))
 Tree.add_edges_from(edges_to_add)
-K = [0, 1, 2, 3, 4, 5, 6]
+K = [0, 4, 5, 6]
 print(tree_decomp_dynamic(Tree, 0, labels, K, G))
 # nx.draw(Tree, with_labels=True)
