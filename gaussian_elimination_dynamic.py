@@ -1,3 +1,4 @@
+import itertools
 import sys
 import networkx as nx
 import python_algorithms
@@ -28,7 +29,7 @@ def glue(u, v, p):
     for p_i in p:
         if frozenset([u, v]).issubset(p_i):
             p_u = p_v = p_i
-            break
+            continue
         if frozenset([u]).issubset(p_i):
             p_u = p_i
             continue
@@ -39,6 +40,55 @@ def glue(u, v, p):
 
     new_p.append(p_u.union(p_v))
     return frozenset(new_p)
+
+
+def cuts(U, v):
+    out = []
+    for i in range(1, len(U)):
+        out.extend(
+            [(frozenset(part), frozenset(U.difference(part))) for part in itertools.combinations(U, i) if v in part])
+    return out
+
+
+def reduce(A, U):
+    # print(A, U)
+    if len(A) <= 2 ** len(U):
+        return A
+
+    A = sorted(A, key=lambda x: x[1])
+    print(len(A), A)
+    v = next(iter(U))
+
+    cut_matrix = {}
+    all_cuts = cuts(U, v)
+
+    for p, _ in A:
+        for cut in all_cuts:
+            cut_matrix[(p, cut)] = int(all((p_i.issubset(cut[0]) or p_i.issubset(cut[1]) for p_i in p)))
+
+    out = []
+    for i in range(len(A)):
+        if len(out) == 2 ** len(U):
+            break
+
+        has_one = False
+        p = A[i][0]
+        for cut in all_cuts:
+            if cut_matrix[(p, cut)] == 1:
+                has_one = True
+                for j in range(i + 1, len(A)):
+                    q = A[j][0]
+                    if cut_matrix[(q, cut)] == 0:
+                        continue
+                    for cut_prim in all_cuts:
+                        cut_matrix[(q, cut_prim)] += cut_matrix[(p, cut_prim)]
+                        cut_matrix[(q, cut_prim)] %= 2
+                break
+
+        if has_one:
+            out.append(A[i])
+
+    return set(out)
 
 
 def memoization(t, C, T, X, labels, G, K):
@@ -80,6 +130,7 @@ def memoization(t, C, T, X, labels, G, K):
                     p = p.union(frozenset([frozenset([u])]))
 
                 p = glue(u, v, p)
+
                 if p in rmc:
                     rmc[p] = min(rmc[p], w + 1)
                 else:
@@ -134,6 +185,8 @@ def memoization(t, C, T, X, labels, G, K):
     elif labels[t][0] == LEAF_NODE:
         return {(frozenset([]), 0)}
 
+    C[(t, X)] = reduce(C[(t, X)], X)
+
     return C[(t, X)]
 
 
@@ -143,7 +196,6 @@ def gaussian_elim_dynamic(T, root, labels, K, G):
     C = {}
     memoization(root, C, T, frozenset([]), labels, G, K)
     return [w for _, w in C[(0, frozenset({0}))]][0]
-
 
 
 T = {27: [0]
@@ -175,7 +227,7 @@ T = {27: [0]
     , 24: [25]
     , 25: [26]
     , 26: [28]
-    , 28: [] }
+    , 28: []}
 
 bags = {27: frozenset([])
     , 0: frozenset([0])
@@ -206,7 +258,7 @@ bags = {27: frozenset([])
     , 24: frozenset([5, 6])
     , 25: frozenset([5, 6])
     , 26: frozenset([6])
-    , 28: frozenset([])    }
+    , 28: frozenset([])}
 
 labels = {27: (FORGET_NODE, 0)
     , 0: (FORGET_NODE, 1)
@@ -247,6 +299,6 @@ for x in T.keys():
     for y in T[x]:
         edges_to_add.append((x, y))
 Tree.add_edges_from(edges_to_add)
-K = [0, 4, 5, 6]
+K = [0, 2, 3]
 
 print(gaussian_elim_dynamic(Tree, 27, labels, K, T))
