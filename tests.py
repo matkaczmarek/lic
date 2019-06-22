@@ -1,7 +1,14 @@
+import copy
+
+import networkx as nx
+
 from graph import Graph
 from inclusion import count_steiner_tree
 from set_dynamic import set_dynamic
-from generate_test import inclusion_brute_force, set_dynamic_brute_force
+from generate_test import inclusion_brute_force, set_dynamic_brute_force, make_test,x_print_tree
+from gaussian_elimination_dynamic import gaussian_elim_dynamic
+from tree_decomposition_dynamic import tree_decomp_dynamic
+import matplotlib.pyplot as plt
 
 
 def test_inclusion():
@@ -14,4 +21,14 @@ def test_inclusion():
     print(inclusion_brute_force(G, K, l+1), count_steiner_tree(G, K, l+1))
     print(inclusion_brute_force(G, K, l + 2), count_steiner_tree(G, K, l + 2))
 
-test_inclusion()
+G, K, tree_decomp, labels, root = make_test('stp/es10fst01.stp')
+
+#print("SET", set_dynamic(Graph(Temp), K))
+
+#nx.draw(tree_decomp, with_labels=True)
+#plt.show()
+#x_print_tree(tree_decomp, root, labels)
+#print(K)
+#print("SET", set_dynamic(G, K))
+print("GAUSS", gaussian_elim_dynamic(tree_decomp, root, labels, K, G))
+print("NORMAL", tree_decomp_dynamic(tree_decomp, root, labels, K, G))

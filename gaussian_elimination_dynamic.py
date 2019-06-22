@@ -7,6 +7,16 @@ LEAF_NODE, INTRODUCE_VERTEX_NODE, INTRODUCE_EDGE_NODE = "Leaf node", "Introduce 
 FORGET_NODE, JOIN_NODE = "Forget node", "Join node"
 bag = 'bag'
 
+def build_subgraph_Gf(T: nx.DiGraph, v: int, nodes: set, edges: set, labels: dict):
+
+    for x in T.node[v][bag]:
+        nodes.add(x)
+
+    if labels[v][0] == INTRODUCE_EDGE_NODE:
+        edges.add(labels[v][1])
+
+    for u in T.neighbors(v):
+        build_subgraph_Gf(T, u, nodes, edges, labels)
 
 def join(p1, p2):
     new_P = []
@@ -44,7 +54,7 @@ def glue(u, v, p):
 
 def cuts(U, v):
     out = []
-    for i in range(1, len(U)):
+    for i in range(1, len(U) + 1):
         out.extend(
             [(frozenset(part), frozenset(U.difference(part))) for part in itertools.combinations(U, i) if v in part])
     return out
@@ -55,8 +65,8 @@ def reduce(A, U):
     if len(A) <= 2 ** len(U):
         return A
 
+
     A = sorted(A, key=lambda x: x[1])
-    print(len(A), A)
     v = next(iter(U))
 
     cut_matrix = {}
@@ -91,7 +101,7 @@ def reduce(A, U):
     return set(out)
 
 
-def memoization(t, C, T, X, labels, G, K):
+def memoization(t: int, C: dict, T: nx.DiGraph, X: frozenset, labels: dict, G: nx.Graph, K: list):
     if (t, X) in C.keys():
         return C[(t, X)]
 
@@ -107,6 +117,7 @@ def memoization(t, C, T, X, labels, G, K):
             C[(t, X)] = memoization(y, C, T, X, labels, G, K)
         else:  # v not in X but v in K
             return {}
+
     elif labels[t][0] == INTRODUCE_EDGE_NODE:
         y = [i for i in T.neighbors(t)][0]
         # labels[t] is tuple (name, (u, v))
@@ -129,12 +140,12 @@ def memoization(t, C, T, X, labels, G, K):
                 if all(not frozenset([u]).issubset(p_i) for p_i in p):
                     p = p.union(frozenset([frozenset([u])]))
 
-                p = glue(u, v, p)
+                p_prim = glue(u, v, p)
 
-                if p in rmc:
-                    rmc[p] = min(rmc[p], w + 1)
+                if p_prim in rmc:
+                    rmc[p_prim] = min(rmc[p_prim], w + 1)
                 else:
-                    rmc[p] = w + 1
+                    rmc[p_prim] = w + 1
             C[(t, X)] = set([(k, rmc[k]) for k in rmc])
 
     elif labels[t][0] == FORGET_NODE:
@@ -144,14 +155,18 @@ def memoization(t, C, T, X, labels, G, K):
         v = labels[t][1]
 
         rmc = {}
-        for p, w in memoization(y, C, T, X.difference([v]), labels, G, K):
-            if p in rmc:
-                rmc[p] = min(rmc[p], w)
-            else:
-                rmc[p] = w
+        if v not in K:
+            for p, w in memoization(y, C, T, X.difference([v]), labels, G, K):
+                if p in rmc:
+                    rmc[p] = min(rmc[p], w)
+                else:
+                    rmc[p] = w
 
         for p, w in memoization(y, C, T, X.union([v]), labels, G, K):
             if frozenset([v]) in p:
+                continue
+
+            if all(not frozenset([v]).issubset(p_i) for p_i in p):
                 continue
 
             new_p = []
@@ -187,15 +202,17 @@ def memoization(t, C, T, X, labels, G, K):
 
     C[(t, X)] = reduce(C[(t, X)], X)
 
+    #print(t, X, C[(t, X)])
     return C[(t, X)]
 
 
-def gaussian_elim_dynamic(T, root, labels, K, G):
+def gaussian_elim_dynamic(T: nx.DiGraph, root: int, labels: dict, K: list, G: nx.Graph):
     y = [i for i in T.neighbors(root)][0]
 
     C = {}
-    memoization(root, C, T, frozenset([]), labels, G, K)
-    return [w for _, w in C[(0, frozenset({0}))]][0]
+    memoization(y, C, T, T.node[y][bag], labels, G, K)
+
+    return [w for _, w in C[ (y, T.node[y][bag]) ]][0]
 
 
 T = {27: [0]
@@ -299,6 +316,6 @@ for x in T.keys():
     for y in T[x]:
         edges_to_add.append((x, y))
 Tree.add_edges_from(edges_to_add)
-K = [0, 2, 3]
+K = [4, 0, 2, 3]
 
-print(gaussian_elim_dynamic(Tree, 27, labels, K, T))
+#print(gaussian_elim_dynamic(Tree, 27, labels, K, T))
