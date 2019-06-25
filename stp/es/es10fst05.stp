@@ -1,0 +1,53 @@
+33d32945 STP File, STP Format Version 1.00
+Section Comment
+Name    "es10fst05"
+Creator "Martin Zachariasen, David Warme"
+Remark  "Reduced rectilinear graph from FST generator GeoSteiner"
+End
+
+Section Graph
+Nodes 12
+Edges 11
+E 3 10 953301
+E 2 12 1998529
+E 2 4 2121472
+E 6 7 653293
+E 6 10 2389030
+E 7 11 881904
+E 9 11 583784
+E 5 12 2439991
+E 5 9 2545642
+E 8 12 1448199
+E 1 11 2803771
+End
+
+Section Terminals
+Terminals 10
+T 1
+T 2
+T 3
+T 4
+T 5
+T 6
+T 7
+T 8
+T 9
+T 10
+End
+
+Section Coordinates
+DD 1 2645109 7072475
+DD 2 7940569 2692202
+DD 3 27461 2156894
+DD 4 8038497 668658
+DD 5 5500578 4690731
+DD 6 2657439 2869247
+DD 7 2719144 3460835
+DD 8 9310821 4768678
+DD 9 3302928 4342739
+DD 10 349050 2788606
+DD 11 2719144 4342739
+DD 12 7940569 4690731
+End
+
+EOF

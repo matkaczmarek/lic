@@ -61,11 +61,10 @@ def cuts(U, v):
 
 
 def reduce(A, U):
-    # print(A, U)
     if len(A) <= 2 ** len(U):
         return A
 
-
+    #sort matrix by weight
     A = sorted(A, key=lambda x: x[1])
     v = next(iter(U))
 
@@ -76,6 +75,7 @@ def reduce(A, U):
         for cut in all_cuts:
             cut_matrix[(p, cut)] = int(all((p_i.issubset(cut[0]) or p_i.issubset(cut[1]) for p_i in p)))
 
+    #out will be our basis for cut_matrix
     out = []
     for i in range(len(A)):
         if len(out) == 2 ** len(U):
@@ -202,7 +202,6 @@ def memoization(t: int, C: dict, T: nx.DiGraph, X: frozenset, labels: dict, G: n
 
     C[(t, X)] = reduce(C[(t, X)], X)
 
-    #print(t, X, C[(t, X)])
     return C[(t, X)]
 
 
@@ -213,109 +212,3 @@ def gaussian_elim_dynamic(T: nx.DiGraph, root: int, labels: dict, K: list, G: nx
     memoization(y, C, T, T.node[y][bag], labels, G, K)
 
     return [w for _, w in C[ (y, T.node[y][bag]) ]][0]
-
-
-T = {27: [0]
-    , 0: [1]
-    , 1: [2]
-    , 2: [3]
-    , 3: [4]
-    , 4: [5]
-    , 5: [6]
-    , 6: [7]
-    , 7: [8]
-    , 8: [9]
-    , 9: [10]
-    , 10: [11, 19]
-    , 11: [12]
-    , 12: [13]
-    , 13: [14]
-    , 14: [15]
-    , 15: [16]
-    , 16: [17]
-    , 17: [18]
-    , 18: [29]
-    , 29: []
-    , 19: [20]
-    , 20: [21]
-    , 21: [22]
-    , 22: [23]
-    , 23: [24]
-    , 24: [25]
-    , 25: [26]
-    , 26: [28]
-    , 28: []}
-
-bags = {27: frozenset([])
-    , 0: frozenset([0])
-    , 1: frozenset([0, 1])
-    , 2: frozenset([0, 1])
-    , 3: frozenset([1])
-    , 4: frozenset([1, 2])
-    , 5: frozenset([1, 2])
-    , 6: frozenset([3, 1, 2])
-    , 7: frozenset([3, 1, 2])
-    , 8: frozenset([1, 2, 3, 5])
-    , 9: frozenset([1, 2, 3, 5])
-    , 10: frozenset([1, 2, 3, 5])
-    , 11: frozenset([1, 2, 3, 5])
-    , 12: frozenset([2, 3, 5])
-    , 13: frozenset([2, 5])
-    , 14: frozenset([2, 4, 5])
-    , 15: frozenset([2, 4, 5])
-    , 16: frozenset([4, 5])
-    , 17: frozenset([4, 5])
-    , 18: frozenset([5])
-    , 29: frozenset([])
-    , 19: frozenset([1, 2, 3, 5])
-    , 20: frozenset([2, 3, 5])
-    , 21: frozenset([3, 5])
-    , 22: frozenset([3, 5, 6])
-    , 23: frozenset([3, 5, 6])
-    , 24: frozenset([5, 6])
-    , 25: frozenset([5, 6])
-    , 26: frozenset([6])
-    , 28: frozenset([])}
-
-labels = {27: (FORGET_NODE, 0)
-    , 0: (FORGET_NODE, 1)
-    , 1: (INTRODUCE_EDGE_NODE, (0, 1))
-    , 2: (INTRODUCE_VERTEX_NODE, 0)
-    , 3: (FORGET_NODE, 2)
-    , 4: (INTRODUCE_EDGE_NODE, (1, 2))
-    , 5: (FORGET_NODE, 3)
-    , 6: (INTRODUCE_EDGE_NODE, (1, 3))
-    , 7: (FORGET_NODE, 5)
-    , 8: (INTRODUCE_EDGE_NODE, (2, 5))
-    , 9: (INTRODUCE_EDGE_NODE, (3, 5))
-    , 10: (JOIN_NODE, 0)
-    , 11: (INTRODUCE_VERTEX_NODE, 1)
-    , 12: (INTRODUCE_VERTEX_NODE, 3)
-    , 13: (FORGET_NODE, 4)
-    , 14: (INTRODUCE_EDGE_NODE, (2, 4))
-    , 15: (INTRODUCE_VERTEX_NODE, 2)
-    , 16: (INTRODUCE_EDGE_NODE, (4, 5))
-    , 17: (INTRODUCE_VERTEX_NODE, 4)
-    , 18: (INTRODUCE_VERTEX_NODE, 5)
-    , 29: (LEAF_NODE, 0)
-    , 19: (INTRODUCE_VERTEX_NODE, 1)
-    , 20: (INTRODUCE_VERTEX_NODE, 2)
-    , 21: (FORGET_NODE, 6)
-    , 22: (INTRODUCE_EDGE_NODE, (3, 6))
-    , 23: (INTRODUCE_VERTEX_NODE, 3)
-    , 24: (INTRODUCE_EDGE_NODE, (5, 6))
-    , 25: (INTRODUCE_VERTEX_NODE, 5)
-    , 26: (INTRODUCE_VERTEX_NODE, 6)
-    , 28: (LEAF_NODE, 0)
-          }
-edges_to_add = []
-Tree = nx.DiGraph()
-for x in T.keys():
-    Tree.add_node(x, bag=bags[x])
-    # print(x, Tree.node[x][bag])
-    for y in T[x]:
-        edges_to_add.append((x, y))
-Tree.add_edges_from(edges_to_add)
-K = [4, 0, 2, 3]
-
-#print(gaussian_elim_dynamic(Tree, 27, labels, K, T))

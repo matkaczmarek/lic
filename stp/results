@@ -1,0 +1,180 @@
+Instance stp/b01.stp
+TW 4
+GAUSS 18
+Gauss duration:  58.54201316833496
+Normal duration:  0.0
+
+Instance stp/b02.stp
+TW 4
+GAUSS 20
+Gauss duration:  60.25433540344238
+Normal duration:  0.0
+
+Instance stp/b08.stp
+TW 6
+GAUSS 25
+Gauss duration:  1807.7571392059326
+Normal duration:  0.0
+
+Instance stp/b09.stp
+TW 6
+GAUSS 45
+Gauss duration:  1692.0747756958008
+Normal duration:  0.0
+
+Instance stp/b15.stp
+TW 8
+GAUSS 63
+Gauss duration:  63882.97390937805
+Normal duration:  0.0
+
+
+WITHOUT REDUCE
+Instance stp/b01.stp
+TW 4
+GAUSS 18
+Gauss duration:  69.98205184936523
+Normal duration:  0.0
+Instance stp/b02.stp
+TW 4
+GAUSS 20
+Gauss duration:  81.8476676940918
+Normal duration:  0.0
+Instance stp/b08.stp
+TW 6
+GAUSS 25
+Gauss duration:  4664.474010467529
+Normal duration:  0.0
+Instance stp/b09.stp
+TW 6
+GAUSS 45
+Gauss duration:  4478.027582168579
+Normal duration:  0.0
+Instance stp/b15.stp
+had not enough patience XD
+
+ES
+Instance stp/es/es10fst01.stp
+TW 3
+RBA 15
+RBA:  5.954265594482422
+CTD 15
+CDT duration:  27233.88385772705
+DPS duration:  0.0
+Instance stp/es/es10fst02.stp
+TW 1
+RBA 13
+RBA:  0.9937286376953125
+CTD 13
+CDT duration:  54.85653877258301
+DPS duration:  0.0
+Instance stp/es/es10fst03.stp
+TW 2
+RBA 14
+RBA:  3.9930343627929688
+CTD 14
+CDT duration:  1586.3139629364014
+DPS duration:  0.0
+Instance stp/es/es10fst04.stp
+TW 2
+RBA 16
+RBA:  3.988981246948242
+CTD 16
+CDT duration:  1330.0037384033203
+DPS duration:  0.0
+Instance stp/es/es10fst05.stp
+TW 1
+RBA 11
+RBA:  0.9968280792236328
+CTD 11
+CDT duration:  33.93101692199707
+DPS duration:  0.0
+Instance stp/es/es10fst06.stp
+TW 2
+RBA 14
+RBA:  4.983663558959961
+CTD 14
+CDT duration:  1962.9597663879395
+DPS duration:  0.0
+Instance stp/es/es10fst11.stp
+TW 1
+RBA 13
+RBA:  0.0
+CTD 13
+CDT duration:  60.056209564208984
+DPS duration:  0.0
+Instance stp/es/es10fst12.stp
+TW 1
+RBA 12
+RBA:  0.0
+CTD 12
+CDT duration:  40.56096076965332
+DPS duration:  0.0
+Instance stp/es/es10fst13.stp
+TW 3
+RBA 15
+RBA:  6.582975387573242
+CTD 15
+CDT duration:  24521.74997329712
+DPS duration:  0.0
+Instance stp/es/es10fst14.stp
+TW 3
+RBA 18
+RBA:  10.172128677368164
+CTD 18
+CDT duration:  37668.35594177246
+DPS duration:  0.0
+Instance stp/es/es10fst15.stp
+TW 2
+RBA 14
+RBA:  10.443687438964844
+CTD 14
+CDT duration:  1419.8591709136963
+DPS duration:  0.0
+
+
+
+ES WIEKSZE
+Instance stp/eslarge/es90fst12.stp
+TW 5
+RBA 37
+RBA:  1066.457986831665
+CDT duration:  0.0
+DPS 37
+DPS duration:  144674.4303703308
+Instance stp/eslarge/es100fst10.stp
+TW 5
+RBA 42
+RBA:  1650.2635478973389
+CDT duration:  0.0
+DPS 42
+DPS duration:  181478.85990142822
+Instance stp/eslarge/es80fst06.stp
+TW 6
+RBA 48
+RBA:  3306.59556388855
+CDT duration:  0.0
+DPS 48
+DPS duration:  99632.74240493774
+Instance stp/eslarge/es90fst01.stp
+TW 6
+RBA 44
+RBA:  4139.956951141357
+CDT duration:  0.0
+DPS 44
+DPS duration:  112892.22860336304
+Instance stp/eslarge/es100fst14.stp
+TW 4
+RBA 49
+RBA:  416.2619113922119
+CDT duration:  0.0
+DPS 49
+DPS duration:  131443.04656982422
+
+Instance stp/eslarge/i080-001.stp
+TW 9
+RBA 12
+RBA:  1073294.9876785278
+DPS 12
+DPS duration:  21990.72527885437
+

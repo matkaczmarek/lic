@@ -1,6 +1,4 @@
-from graph import Graph
 from itertools import chain, combinations
-import numpy as np
 
 
 def powerset(X):

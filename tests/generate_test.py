@@ -419,6 +419,7 @@ def make_test(filename):
     G.add_edges_from(edges)
 
     tw, tree_decomp = treewidth_decomp(G)
+    print("TW", tw)
     tree_decomp = make_directed(tree_decomp)
     root = nice_tree_decomp(tree_decomp, 0)
     labels = {}
